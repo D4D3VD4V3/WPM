@@ -6,7 +6,7 @@ custom_min := 1
 custom_wordcount := 5
 
 Gui, font, w600 q5 s11
-Gui, add, text, vTxt w500 Center gStart, Hit Enter to begin; Escape to quit.
+Gui, add, text, vTxt w500 Center, Hit Enter to begin; Escape to quit.
 Gui, font, 
 Gui, add, edit, vinp  w500 Center
 Gui, add, text, verror_placeholder w50 cRed section, Errors:
@@ -100,6 +100,7 @@ Loop
 	}
 	GuiControl, Text, inp, 
 }
+GuiControl, Text, Txt, Aww, you ran out of time!
 GuiControl, Text, inp,
 GuiControl, Disable, inp
 ShowStats()
