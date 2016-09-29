@@ -3,7 +3,7 @@
 SetBatchLines -1
 ; Following values can be customized. Default values are recommended.
 custom_min := 1
-custom_wordcount := 5
+custom_wordcount := 3
 
 Gui, font, w600 q5 s11
 Gui, add, text, vTxt w500 Center, Hit Enter to begin; Escape to quit.
@@ -62,7 +62,7 @@ ShowStats()
 	GrossWPM := ((mistakes + points) / 5) / custom_min
 	NetWPM := GrossWPM - (mistakes / custom_min)
 	Accuracy := (points / (points + mistakes)) * 100
-	Msgbox % "`t" "Stats:`nGross WPM : " Round(GrossWPM, 2) "`nNet WPM : " Round(NetWPM, 2) "`nAccuracy : " Round(Accuracy, 2) "%"
+	Msgbox,, Results, % "`t" "Stats:`nGross WPM : " Round(GrossWPM, 2) "`nNet WPM : " Round(NetWPM, 2) "`nAccuracy : " Round(Accuracy, 2) "%"
 }
 
 Parser(string1, string2)
@@ -83,11 +83,13 @@ Parser(string1, string2)
 	}
 	
 }
+
 Start:
 SetTimer, CountdownTimer, 1000
+SetTimer, TypoCheck, 10
 Loop
 {
-	temp := Stringify(custom_wordcount)
+	global temp := Stringify(custom_wordcount)
 	len := strlen(temp)
 	GuiControl, Text, Txt, %temp%
 	Input, ov, V L%len%) T%timer_in_secs%
@@ -110,6 +112,16 @@ CountdownTimer:
 	if(!timer_in_secs)
 		SetTimer, CountdownTimer, Off
 GuiControl, Text, time_sec, % timer_in_secs--
+return
+
+TypoCheck:
+Gui, submit, nohide
+if(inp != SubStr(temp, 1, strlen(inp)))
+	Gui, Font, cRed
+else
+	Gui, Font, cBlack
+GuiControl, Font, inp
+SetTimer, TypoCheck, 10
 return
 
 GuiEscape:
